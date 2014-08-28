@@ -4,7 +4,7 @@ Coupon Code
 
 Synopsis
 --------
-This is a port of the CPAN module Algorithm::CouponCode[0] by Grant McLean.
+This library is a loose port of the CPAN module Algorithm::CouponCode[0] by Grant McLean.
 
 [0] https://github.com/grantm/Algorithm-CouponCode
 
@@ -27,11 +27,16 @@ Quickstart
 
 use CouponCode\CouponCode;
 
-$code = CouponCode::generate();
+$code = new CouponCode();
+
+$result = $code->generate();
 // returns a string in `XXXX-XXXX-XXXX` format i.e.
 // `1K7Q-CTFM-LMTC`.
 
-$validates = CouponCode::validate($code);
+$code->validate($result);
 // returns a boolean indicating if the code is valid.
+
+$code->normalize('i9oD_V67-8Dsz');
+// returns `190D-V467-8D52`
 
 ?>

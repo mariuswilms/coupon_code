@@ -14,11 +14,61 @@ use Exception;
 
 class CouponCode {
 
-	const PARTS = 3;
-	const PART_LENGTH = 4;
+	/**
+	 * Number of parts of the code.
+	 *
+	 * @var integer
+	 */
+	protected $_parts = 3;
 
-	const SYMBOLS = '0123456789ABCDEFGHJKLMNPQRTUVWXY';
-	const SYMBOLS_LENGTH = 31;
+	/**
+	 * Length of each part.
+	 *
+	 * @var integer
+	 */
+	protected $_partLength = 4;
+
+	/**
+	 * Alphabet used when generating codes. Already leaves
+	 * easy to confuse letters out.
+	 *
+	 * @var array
+	 */
+	protected $_symbols = [
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'J', 'K',
+		'L', 'M', 'N', 'P', 'Q', 'R', 'T', 'U', 'V', 'W',
+		'X', 'Y'
+	];
+
+	/**
+	 * ROT13 encoded list of bad words.
+	 *
+	 * @var array
+	 */
+	protected $_badWords = [
+		'SHPX', 'PHAG', 'JNAX', 'JNAT', 'CVFF', 'PBPX', 'FUVG', 'GJNG', 'GVGF', 'SNEG', 'URYY',
+		'ZHSS', 'QVPX', 'XABO', 'NEFR', 'FUNT', 'GBFF', 'FYHG', 'GHEQ', 'FYNT', 'PENC', 'CBBC',
+		'OHGG', 'SRPX', 'OBBO', 'WVFZ', 'WVMM', 'CUNG'
+	];
+
+	/**
+	 * Constructor.
+	 *
+	 * @param array $config Available options are `parts` aand `partLength`.
+	 */
+	public function __construct(array $config = []) {
+		$config += [
+			'parts' => null,
+			'partLength' => null
+		];
+		if (isset($config['parts'])) {
+			$this->_parts = $config['parts'];
+		}
+		if (isset($config['partLength'])) {
+			$this->_partLength = $config['partLength'];
+		}
+	}
 
 	/**
 	 * Generates a coupon code using the format `XXXX-XXXX-XXXX`.
@@ -34,56 +84,33 @@ class CouponCode {
 	 * skipped.  Any generated part which happens to spell an 'inappropriate' 4-letter
 	 * word (e.g.: 'P00P') will also be skipped.
 	 *
-	 * @return string
+	 * @param string $random Allows to directly support a plaintext i.e. for testing.
+	 * @return string Dash separated and normalized code.
 	 */
-	public static function generate($random = null) {
+	public function generate($random = null) {
 		$results = [];
-		$plaintext = static::_toSymbols($random ?: static::_random(8));
-		// $plaintext = static::_normalize($plaintext);
 
-		$part = 0;
-		while (count($results) < static::PARTS) {
-			$result  = substr($plaintext, $part * static::PART_LENGTH, static::PART_LENGTH);
-			$result .= static::_checkdigitAlg1($part + 1, $result);
+		$plaintext = $this->_convert($random ?: $this->_random(8));
+		// String is already normalized by used alphabet.
 
-			if (static::_isBadWord($result)) {
-				continue;
+		$part = $try = 0;
+		while (count($results) < $this->_parts) {
+			$result = substr($plaintext, $try * $this->_partLength, $this->_partLength - 1);
+
+			if (!$result || strlen($result) !== $this->_partLength - 1) {
+				throw new Exception('Ran out of plaintext.');
 			}
-			if (static::_isValidWhenSwapped($result)) {
+			$result .= $this->_checkdigitAlg1($part + 1, $result);
+
+			$try++;
+			if ($this->_isBadWord($result) || $this->_isValidWhenSwapped($result)) {
 				continue;
 			}
 			$part++;
+
 			$results[] = $result;
 		}
 		return implode('-', $results);
-	}
-
-	protected static function _checkdigitAlg1($partNumber, $value) {
-		$symbols = static::_symbols();
-		$symbolsFlipped = array_flip($symbols);
-		$result = $partNumber;
-
-		foreach (str_split($value) as $char) {
-			$result = $result * 19 + $symbolsFlipped[$char];
-		}
-		return $symbols[$result % static::SYMBOLS_LENGTH];
-	}
-
-	protected static function _isBadWord($value) {
-		$list = [
-			'SHPX', 'PHAG', 'JNAX', 'JNAT', 'CVFF', 'PBPX', 'FUVG', 'GJNG', 'GVGF', 'SNEG', 'URYY',
-			'ZHSS', 'QVPX', 'XABO', 'NEFR', 'FUNT', 'GBFF', 'FYHG', 'GHEQ', 'FYNT', 'PENC', 'CBBC',
-			'OHGG', 'SRPX', 'OBBO', 'WVFZ', 'WVMM', 'CUNG'
-		];
-		$list = array_flip(array_map(function($value) {
-			return static::_normalize(str_rot13($value));
-		}, $list));
-
-		return isset($list[static::_normalize($value)]);
-	}
-
-	protected static function _isValidWhenSwapped($value) {
-		return false;
 	}
 
 	/**
@@ -91,20 +118,20 @@ class CouponCode {
 	 * certain letters i.e. `O` are converted to digit equivalents
 	 * i.e. `0`.
 	 *
-	 * @param $code string
+	 * @param $code string Potentially unnormalized code.
 	 * @return boolean
 	 */
-	public static function validate($code) {
-		$code = static::_normalize($code, ['clean' => true, 'case' => true]);
+	public function validate($code) {
+		$code = $this->_normalize($code, ['clean' => true, 'case' => true]);
 
-		if (strlen($code) !== (static::PARTS * static::PARTS_LENGTH)) {
+		if (strlen($code) !== ($this->_parts * $this->_partLength)) {
 			return false;
 		}
-		$parts = str_split($code, static::PARTS_LENGTH);
+		$parts = str_split($code, $this->_partLength);
 
 		foreach ($parts as $number => $part) {
 			$expected = substr($part, -1);
-			$result = static::_checkdigitAlg1($number + 1, substr($part, 0, strlen($part) - 1));
+			$result = $this->_checkdigitAlg1($number + 1, $x = substr($part, 0, strlen($part) - 1));
 
 			if ($result !== $expected) {
 				return false;
@@ -113,18 +140,79 @@ class CouponCode {
 		return true;
 	}
 
-	protected static function _toSymbols($bytes) {
-		$symbols = static::_symbols();
-		$result = hash('sha1', $bytes);
+	/**
+	 * Implements the checkdigit algorithm #1 as used by the original library.
+	 *
+	 * @param integer $partNumber Number of the part.
+	 * @param string $value Actual part without the checkdigit.
+	 * @return string The checkdigit symbol.
+	 */
+	protected function _checkdigitAlg1($partNumber, $value) {
+		$symbolsFlipped = array_flip($this->_symbols);
+		$result = $partNumber;
+
+		foreach (str_split($value) as $char) {
+			$result = $result * 19 + $symbolsFlipped[$char];
+		}
+		return $this->_symbols[$result % (count($this->_symbols) - 1)];
+	}
+
+	/**
+	 * Verifies that a given value is a bad word.
+	 *
+	 * @param string $value
+	 * @return boolean
+	 */
+	protected function _isBadWord($value) {
+		return isset($this->_badWords[str_rot13($value)]);
+	}
+
+	/**
+	 * Verifies that a given code part is still valid its symbols
+	 * are swapped (undesirable).
+	 *
+	 * @param string $value
+	 * @return boolean
+	 */
+	protected function _isValidWhenSwapped($value) {
+		return false;
+	}
+
+	/**
+	 * Normalizes a given code using dash separators.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	public function normalize($string) {
+		$string = $this->_normalize($string, ['clean' => true, 'case' => true]);
+		return implode('-', str_split($string, $this->_partLength));
+	}
+
+	/**
+	 * Converts givens string using symbols.
+	 *
+	 * @param string $string
+	 * @return string
+	 */
+	protected function _convert($string) {
+		$symbols = $this->_symbols;
 
 		$result = array_map(function($value) use ($symbols) {
-			return $symbols[ord($value) & static::SYMBOLS_LENGTH];
-		}, str_split($result));
+			return $symbols[ord($value) & (count($symbols) - 1)];
+		}, str_split(hash('sha1', $string)));
 
 		return implode('', $result);
 	}
 
-	protected static function _normalize($string, array $options = []) {
+	/**
+	 * Internal method to normalize given strings.
+	 *
+	 * @param string $string
+	 * @param array $options
+	 * @return string
+	 */
+	protected function _normalize($string, array $options = []) {
 		$options += [
 			'clean' => false,
 			'case' => false
@@ -141,7 +229,7 @@ class CouponCode {
 			'A' => 4
 		]);
 		if ($options['clean']) {
-			$string = preg_replace('/[^0-9A-Z]+/', '//', $string);
+			$string = preg_replace('/[^0-9A-Z]+/', '', $string);
 		}
 		return $string;
 	}
@@ -149,10 +237,10 @@ class CouponCode {
 	/**
 	 * Generates a cryptographically secure sequence of bytes.
 	 *
-	 * @param $bytes integer Length of sequence.
+	 * @param integer $bytes Number of bytes to return.
 	 * @return string
 	 */
-	protected static function _random($bytes) {
+	protected function _random($bytes) {
 		if (is_readable('/dev/urandom')) {
 			$stream = fopen('/dev/urandom', 'rb');
 			$result = fread($stream, $bytes);
@@ -164,14 +252,6 @@ class CouponCode {
 			return mcrypt_create_iv($bytes, MCRYPT_DEV_RANDOM);
 		}
 		throw new Exception("No source for generating a cryptographically secure seed found.");
-	}
-
-	protected static function _symbols() {
-		static $cached;
-		if ($cached) {
-			return $cached;
-		}
-		return $cached = str_split(static::SYMBOLS);
 	}
 }
 
