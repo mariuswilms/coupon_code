@@ -1,0 +1,25 @@
+{
+    "name": "atelierdisko/coupon_code",
+    "description": "PHP library to generate and validate coupon code strings.",
+    "keywords": ["coupon", "code", "port", "generate", "validate"],
+    "homepage": "https://github.com/atelierdisko/coupon_code",
+    "license": "BSD-3-clause",
+    "authors": [
+        {
+            "name": "Atelier Disko",
+            "homepage": "http://atelierdisko.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.0.0"    
+    },
+    "suggest": {
+      "ext-mcrypt": "The mcrypt extension must be installed if /dev/random is not available."
+    },
+    "autoload": {
+        "psr-4": { "CouponCode\\": "src/" }
+    }
+}
