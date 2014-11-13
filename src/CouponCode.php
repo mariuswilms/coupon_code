@@ -225,9 +225,8 @@ class CouponCode {
 			'O' => 0,
 			'S' => 5,
 			'Z' => 2,
-			'E' => 3,
-			'A' => 4
 		]);
+
 		if ($options['clean']) {
 			$string = preg_replace('/[^0-9A-Z]+/', '', $string);
 		}

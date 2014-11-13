@@ -58,6 +58,15 @@ class CouponCodeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('190D-V467-8D52', $subject->normalize('I9oD-V467-8D52'));
 	}
 
+	public function testNormalize3PartsRandomGenerated() {
+		$subject = new CouponCode(['parts' => 3]);
+
+		for ($i = 0; $i < 200; $i++) {
+			$code = $subject->generate();
+			$this->assertEquals($subject->normalize($code), $code);
+		}
+	}
+
 	public function testValidate() {
 		$subject = new CouponCode();
 		$this->assertTrue($subject->validate('1K7Q-CTFM-LMTC'));
@@ -75,6 +84,15 @@ class CouponCodeTest extends \PHPUnit_Framework_TestCase {
 		$subject = new CouponCode(['parts' => 3]);
 		$this->assertTrue($subject->validate('1K7Q-CTFM-LMTC'));
 		$this->assertFalse($subject->validate('1K7C-CTFW-LMT1'));
+	}
+
+	public function testValidate3PartsRandomGenerated() {
+		$subject = new CouponCode(['parts' => 3]);
+
+		for ($i = 0; $i < 200; $i++) {
+			$code = $subject->generate();
+			$this->assertTrue($subject->validate($code), 'Code was ' . $code);
+		}
 	}
 
 	public function testValidateOrderMatters() {
