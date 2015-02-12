@@ -1,6 +1,6 @@
-
 Coupon Code
--- PHP library to generate and validate coupon code strings.
+=============
+PHP library to generate and validate coupon code strings.
 
 Synopsis
 --------
@@ -23,8 +23,8 @@ $ composer require atelierdisko/coupon_code
 
 Quickstart
 ----------
-<?php
 
+```php
 use CouponCode\CouponCode;
 
 $code = new CouponCode();
@@ -36,7 +36,7 @@ $result = $code->generate();
 $code->validate($result);
 // returns a boolean indicating if the code is valid.
 
-$code->normalize('i9oD_V67-8Dsz');
+$code->normalize('i9oD_V467-8Dsz');
 // returns `190D-V467-8D52`
 
-?>
+```

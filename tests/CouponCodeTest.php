@@ -110,5 +110,3 @@ class CouponCodeTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($subject->validate('1K7Q-CTFM'));
 	}
 }
-
-?>

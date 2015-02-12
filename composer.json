@@ -11,10 +11,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": ">=4.0.0"    
+        "phpunit/phpunit": ">=4.0.0"
     },
     "suggest": {
       "ext-mcrypt": "The mcrypt extension must be installed if /dev/urandom is not available."

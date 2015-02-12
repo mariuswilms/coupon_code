@@ -253,5 +253,3 @@ class CouponCode {
 		throw new Exception("No source for generating a cryptographically secure seed found.");
 	}
 }
-
-?>
