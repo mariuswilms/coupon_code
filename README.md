@@ -1,12 +1,12 @@
-
 Coupon Code
--- PHP library to generate and validate coupon code strings.
+===========
+PHP library to generate and validate coupon code strings.
 
 Synopsis
 --------
-This library is a loose port of the CPAN module Algorithm::CouponCode[0] by Grant McLean.
-
-[0] https://github.com/grantm/Algorithm-CouponCode
+This library is a loose port of the 
+[CPAN module Algorithm::CouponCode](https://github.com/grantm/Algorithm-CouponCode) 
+by Grant McLean.
 
 Copyright & License
 -------------------
@@ -19,12 +19,13 @@ Installation
 The preferred installation method is via composer. You can add
 the library as a dependency via:
 
-$ composer require atelierdisko/coupon_code
+```
+composer require atelierdisko/coupon_code
+```
 
 Quickstart
 ----------
-<?php
-
+```php
 use CouponCode\CouponCode;
 
 $code = new CouponCode();
@@ -38,5 +39,4 @@ $code->validate($result);
 
 $code->normalize('i9oD_V467-8Dsz');
 // returns `190D-V467-8D52`
-
-?>
+```
