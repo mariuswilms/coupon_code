@@ -55,7 +55,7 @@ class CouponCode {
 	/**
 	 * Constructor.
 	 *
-	 * @param array $config Available options are `parts` aand `partLength`.
+	 * @param array $config Available options are `parts` and `partLength`.
 	 */
 	public function __construct(array $config = []) {
 		$config += [
