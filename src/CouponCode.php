@@ -172,16 +172,30 @@ class CouponCode
         return $coupons;
     }
 
-    /**
+   /**
      * Validates given code. Codes are not case sensitive and
      * certain letters i.e. `O` are converted to digit equivalents
      * i.e. `0`.
      *
-     * @param $code string Potentially unnormalized code.
+     * @param {string|array} $code - String or Array of potentially unnormalized code(s).
      * @return boolean
      */
     public function validate($code)
     {
+        if (is_array($code)) {
+            $codes = $code;
+            $isValidArray = [];
+            foreach ($codes as $code) {
+                $isValidArray[] = $this->validate($code);
+            }
+            
+            if (in_array(false, $isValidArray, true)) {
+                return false;
+            }
+            
+            return true;
+        }
+        
         if (!empty($this->_prefix) && substr_count($code, $this->_separator) > ($this->_parts - 1)) {
             //if 'true' there must be a prefix to the code, so we'll remove it to validate.
             $codeParts = explode($this->_separator, $code);
@@ -243,11 +257,12 @@ class CouponCode
         return isset($this->_badWords[str_rot13($value)]);
     }
 
+    
     /**
-     * Normalizes a given code using dash separators.
+     * Normalizes a given code (or array of codes) using dash separators.
      *
-     * @param string $string
-     * @param array $options
+     * @param {string|array} $string - String or Array of potentially unnormalized string(s).
+     * @param array $options - Available option is `checkPrefix`, default set to `true`.
      * @return string
      */
     public function normalize($string, array $options = [])
@@ -256,7 +271,17 @@ class CouponCode
             'checkPrefix' => true
         ];
 
-        if ($options['checkPrefix'] && !empty($this->_prefix)) {
+        if (is_array($string)) {
+            $strings = $string;
+            $normalizedArray = [];
+            foreach ($strings as $string) {
+                $normalizedArray[] = $this->normalize($string, $options);
+            }
+
+            return $normalizedArray;
+        }
+
+        if (filter_var($options['checkPrefix'], FILTER_VALIDATE_BOOLEAN) && !empty($this->_prefix)) {
             $codeParts = explode($this->_separator, $string);
             $currentPrefix = $codeParts[0];
 
@@ -303,7 +328,7 @@ class CouponCode
             'case' => false
         ];
 
-        if ($options['case']) {
+        if (filter_var($options['case'], FILTER_VALIDATE_BOOLEAN)) {
             $string = strtoupper($string);
         }
 
@@ -314,7 +339,7 @@ class CouponCode
             'Z' => 2,
         ]);
 
-        if ($options['clean']) {
+        if (filter_var($options['clean'], FILTER_VALIDATE_BOOLEAN)) {
             $string = preg_replace('/[^0-9A-Z]+/', '', $string);
         }
 
