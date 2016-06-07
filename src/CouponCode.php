@@ -12,7 +12,6 @@
 namespace CouponCode;
 
 use Exception;
-use App\CouponOption;
 
 class CouponCode
 {
