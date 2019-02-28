@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="845a6389-1bf1-4006-88e9-ec4b3ddfd757" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/CouponCode.php" afterPath="$PROJECT_DIR$/src/CouponCode.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,8 +16,8 @@
       <file leaf-file-name="CouponCode.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/CouponCode.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="590">
-              <caret line="250" column="9" lean-forward="false" selection-start-line="250" selection-start-column="9" selection-end-line="250" selection-end-column="9" />
+            <state relative-caret-position="386">
+              <caret line="238" column="33" lean-forward="false" selection-start-line="238" selection-start-column="33" selection-end-line="238" selection-end-column="33" />
               <folding />
             </state>
           </provider>
@@ -28,15 +28,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="68">
               <caret line="4" column="57" lean-forward="false" selection-start-line="4" selection-start-column="57" selection-end-line="4" selection-end-column="57" />
-              <folding>
-                <marker date="1551359100425" expanded="true" signature="0:715" ph="{&quot;name&quot;: &quot;HYP3/coupon_code&quot;...}" />
-                <marker date="1551359100425" expanded="true" signature="294:407" ph="[...]" />
-                <marker date="1551359100425" expanded="true" signature="304:401" ph="{&quot;name&quot;: &quot;Atelier Disko&quot;...}" />
-                <marker date="1551359100425" expanded="true" signature="424:456" ph="{&quot;php&quot;: &quot;&gt;=5.4.0&quot;...}" />
-                <marker date="1551359100425" expanded="true" signature="477:525" ph="{&quot;phpunit/phpunit&quot;: &quot;&gt;=4.0.0&quot;...}" />
-                <marker date="1551359100425" expanded="true" signature="542:644" ph="{&quot;ext-mcrypt&quot;: &quot;The mcrypt extension must be installed if /dev/urandom is not available.&quot;...}" />
-                <marker date="1551359100425" expanded="true" signature="662:713" ph="{...}" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -126,7 +118,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1551357239839</updated>
-      <workItem from="1551357241645" duration="1900000" />
+      <workItem from="1551357241645" duration="3185000" />
     </task>
     <task id="LOCAL-00001" summary="Updated code to use 'random_bytes' instead of 'mcrypt_create_iv'">
       <created>1551357358782</created>
@@ -146,10 +138,11 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1900000" />
+    <option name="totallyTimeSpent" value="3185000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="3456" height="1416" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Remote Host" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12220259" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -190,22 +183,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="57" lean-forward="false" selection-start-line="4" selection-start-column="57" selection-end-line="4" selection-end-column="57" />
-          <folding>
-            <marker date="1551359100425" expanded="true" signature="0:715" ph="{&quot;name&quot;: &quot;HYP3/coupon_code&quot;...}" />
-            <marker date="1551359100425" expanded="true" signature="294:407" ph="[...]" />
-            <marker date="1551359100425" expanded="true" signature="304:401" ph="{&quot;name&quot;: &quot;Atelier Disko&quot;...}" />
-            <marker date="1551359100425" expanded="true" signature="424:456" ph="{&quot;php&quot;: &quot;&gt;=5.4.0&quot;...}" />
-            <marker date="1551359100425" expanded="true" signature="477:525" ph="{&quot;phpunit/phpunit&quot;: &quot;&gt;=4.0.0&quot;...}" />
-            <marker date="1551359100425" expanded="true" signature="542:644" ph="{&quot;ext-mcrypt&quot;: &quot;The mcrypt extension must be installed if /dev/urandom is not available.&quot;...}" />
-            <marker date="1551359100425" expanded="true" signature="662:713" ph="{...}" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/CouponCode.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="590">
-          <caret line="250" column="9" lean-forward="false" selection-start-line="250" selection-start-column="9" selection-end-line="250" selection-end-column="9" />
+        <state relative-caret-position="386">
+          <caret line="238" column="33" lean-forward="false" selection-start-line="238" selection-start-column="33" selection-end-line="238" selection-end-column="33" />
           <folding />
         </state>
       </provider>
