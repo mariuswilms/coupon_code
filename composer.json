@@ -1,5 +1,5 @@
 {
-    "name": "atelierdisko/coupon_code",
+    "name": "HYP3/coupon_code",
     "description": "PHP library to generate and validate coupon code strings.",
     "keywords": ["coupon", "voucher", "code", "token", "key"],
     "homepage": "https://github.com/atelierdisko/coupon_code",

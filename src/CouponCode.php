@@ -241,13 +241,14 @@ class CouponCode {
      * @throws Exception
      */
 	protected function _random($bytes) {
-		if (is_readable('/dev/urandom')) {
-			$stream = fopen('/dev/urandom', 'rb');
-			$result = fread($stream, $bytes);
+        //if (is_readable('/dev/urandom')) {
+        if ($fh = @fopen('/dev/urandom', 'rb')) {
+            $stream = fopen('/dev/urandom', 'rb');
+            $result = fread($stream, $bytes);
 
-			fclose($stream);
-			return $result;
-		}
+            fclose($stream);
+            return $result;
+        }
 		if (function_exists('mcrypt_create_iv')) {
 			return random_bytes($bytes);
 		}
