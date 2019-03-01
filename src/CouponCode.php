@@ -241,14 +241,15 @@ class CouponCode {
      * @throws Exception
      */
 	protected function _random($bytes) {
-        if (is_readable('/dev/urandom')) {
-            $stream = @fopen('/dev/urandom', 'rb');
+        //if (is_readable('/dev/urandom')) {
+        if ($fh = @fopen('/dev/urandom', 'rb')) {
+            $stream = fopen('/dev/urandom', 'rb');
             $result = fread($stream, $bytes);
 
             fclose($stream);
             return $result;
         }
-		if (function_exists('mcrypt_create_iv')) {
+		if (function_exists('random_bytes')) {
 			return random_bytes($bytes);
 		}
 		throw new Exception("No source for generating a cryptographically secure seed found.");
