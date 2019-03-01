@@ -241,9 +241,8 @@ class CouponCode {
      * @throws Exception
      */
 	protected function _random($bytes) {
-        //if (is_readable('/dev/urandom')) {
-        if ($fh = @fopen('/dev/urandom', 'rb')) {
-            $stream = fopen('/dev/urandom', 'rb');
+        if (is_readable('/dev/urandom')) {
+            $stream = @fopen('/dev/urandom', 'rb');
             $result = fread($stream, $bytes);
 
             fclose($stream);
