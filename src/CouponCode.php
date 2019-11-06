@@ -233,22 +233,24 @@ class CouponCode {
 		return $string;
 	}
 
-	/**
-	 * Generates a cryptographically secure sequence of bytes.
-	 *
-	 * @param integer $bytes Number of bytes to return.
-	 * @return string
-	 */
+    /**
+     * Generates a cryptographically secure sequence of bytes.
+     *
+     * @param integer $bytes Number of bytes to return.
+     * @return string
+     * @throws Exception
+     */
 	protected function _random($bytes) {
-		if (is_readable('/dev/urandom')) {
-			$stream = fopen('/dev/urandom', 'rb');
-			$result = fread($stream, $bytes);
+        //if (is_readable('/dev/urandom')) {
+        if ($fh = @fopen('/dev/urandom', 'rb')) {
+            $stream = fopen('/dev/urandom', 'rb');
+            $result = fread($stream, $bytes);
 
-			fclose($stream);
-			return $result;
-		}
-		if (function_exists('mcrypt_create_iv')) {
-			return mcrypt_create_iv($bytes, MCRYPT_DEV_RANDOM);
+            fclose($stream);
+            return $result;
+        }
+		if (function_exists('random_bytes')) {
+			return random_bytes($bytes);
 		}
 		throw new Exception("No source for generating a cryptographically secure seed found.");
 	}
