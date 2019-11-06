@@ -10,7 +10,7 @@ by Grant McLean.
 
 Copyright & License
 -------------------
-This library is Copyright (c) 2014 Atelier Disko if not otherwise stated.
+This library is Copyright (c) 2014 Marius Wilms if not otherwise stated.
 The code is distributed under the terms of the BSD 3-clause License. For
 the full license text see the LICENSE file.
 
