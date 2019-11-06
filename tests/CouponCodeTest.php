@@ -2,7 +2,7 @@
 /**
  * CouponCode
  *
- * Copyright (c) 2014 Atelier Disko. All rights reserved.
+ * Copyright (c) 2014 Marius Wilms. All rights reserved.
  *
  * Use of this source code is governed by a BSD-style
  * license that can be found in the LICENSE file.
