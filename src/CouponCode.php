@@ -139,6 +139,23 @@ class CouponCode {
 		}
 		return true;
 	}
+  
+  /**
+	 * Perform a ROT transform on a string
+	 * Removes the requirement of native PHP str_rot13() as this function is used by hackers
+	 * a lot when obfuscating malicious PHP and worth disabling for security.
+	 *
+	 * @param string $s String to encode
+	 * @param integer $n How many chars to shift by. Defaults to 13 as 
+	 */
+	protected function _str_rot($s, $n = 13) {
+		static $letters = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz';
+		$n = (int)$n % 26;
+		if (!$n) return $s;
+		if ($n < 0) $n += 26;
+		$rep = substr($letters, $n * 2) . substr($letters, 0, $n * 2);
+		return strtr($s, $letters, $rep);
+	}
 
 	/**
 	 * Implements the checkdigit algorithm #1 as used by the original library.
@@ -164,7 +181,7 @@ class CouponCode {
 	 * @return boolean
 	 */
 	protected function _isBadWord($value) {
-		return isset($this->_badWords[str_rot13($value)]);
+		return isset($this->_badWords[$this->_str_rot($value)]);
 	}
 
 	/**
@@ -253,5 +270,3 @@ class CouponCode {
 		throw new Exception("No source for generating a cryptographically secure seed found.");
 	}
 }
-
-?>
